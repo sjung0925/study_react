@@ -19,7 +19,8 @@
         // react state는 어떤 값과 함수를 요소로하는 배열을 리턴
         // 그럼 counter는 값, setCounter 함수로써 쓸 수 있는건가? 근데 파라미터가 두 개 이상이면?
         const onClick = () => {
-          setCounter(counter + 1); // 1 param
+          // setCounter(counter + 1); // 1 param
+          setCounter((current) => current + 1); // more safety
         };
         return (
           <div>
