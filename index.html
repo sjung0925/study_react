@@ -1,70 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+    <!-- Don't use this in production: -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.9/babel.min.js"></script>
+  </head>
+
   <body>
     <div id="root"></div>
+    <script type="text/babel">
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+
+      // 리랜더링 방식을 useState로 변경
+      function App() {
+        let [counter, setCounter] = React.useState(0);
+        // react state는 어떤 값과 함수를 요소로하는 배열을 리턴
+        // 그럼 counter는 값, setCounter 함수로써 쓸 수 있는건가? 근데 파라미터가 두 개 이상이면?
+        const onClick = () => {
+          setCounter(counter + 1); // 1 param
+        };
+        return (
+          <div>
+            <h3>Total clicks : {counter}</h3>
+            <button onClick={onClick}>Click me!</button>
+          </div>
+        );
+      }
+      root.render(<App />);
+
+      /** not good way
+       *
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+      let count = 0;
+
+      function countUp() {
+        count = count + 1;
+        // 2. 여기서 렌더링을 한번더 해주면 카운터가 바뀜
+        render();
+      }
+
+      // 3. 리랜더링 함수를 만듦
+      function render() {
+        root.render(<App />);
+      }
+      const App = () => (
+        <div>
+          <h3>Total clicks : {count}</h3>
+          <button onClick={countUp}>Click me!</button>
+        </div>
+      ); // 1. 리렌더링 하지 않으므로 카운터가 안바뀜.
+      render();
+       *
+      */
+    </script>
   </body>
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="text/babel">
-    const root = document.getElementById("root");
-    // 직접만든 element의 첫글자는 반드시 대문자
-    // 소문자면 html 태그로 인식
-    const Title = () => (
-      <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
-        Hello I'm a span.
-      </h3>
-    );
-    const Btn = () => (
-      <button
-        style={{
-          backgroundColor: "tomato",
-        }}
-        onClick={() => console.log("I'm clicked!")}
-      >
-        Click me!
-      </button>
-    );
-
-    // 잘게 쪼갠것을 합친다...
-    const Container = () => (
-      <div>
-        <Title />
-        <Btn />
-      </div>
-    );
-    ReactDOM.createRoot(root).render(<Container />);
-    /** babel 적용
-    const root = document.getElementById("root");
-    const title = (
-      <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
-        Hello I'm a span.
-      </h3>
-    );
-    const btn = (
-      <button
-        style={{
-          backgroundColor: "tomato",
-        }}
-        onClick={() => console.log("I'm clicked!")}
-      >
-        Click me!
-      </button>
-    );
-    const container = React.createElement("div", null, [title, btn]);
-    ReactDOM.createRoot(root).render(container);
-*/
-
-    /** 리액트 기본 문법 파악
-    const root = document.getElementById("root");
-    const h3 = React.createElement("h3", {
-        onMouseEnter: () => console.log("mouse enter"),
-    }, "Hello I'm a span.");
-    const btn = React.createElement("button", {
-        onClick: () => console.log("I'm clicked!"),
-    }, "Click me!");
-    const container = React.createElement("div", null, [h3, btn]);
-    ReactDOM.createRoot(root).render(container);
-*/
-  </script>
 </html>
