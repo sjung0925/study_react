@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
+    <!-- Don't use this in production: -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.9/babel.min.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+
+      function MinuteToHour() {
+        const [amount, setAmount] = React.useState(0);
+        const [flipped, setFlipped] = React.useState(false);
+        const onChange = (event) => {
+          setAmount(event.target.value);
+        };
+        const reset = () => setAmount(0);
+        const onFlip = () => {
+          reset();
+          setFlipped((current) => !current);
+        };
+
+        return (
+          <div>
+            <div>
+              <label htmlFor="minutes">Minutes</label>
+              <input
+                value={flipped ? amount * 60 : amount}
+                id="minutes"
+                placeholder="Minutes"
+                type="number"
+                onChange={onChange}
+                disabled={flipped === true}
+              />
+            </div>
+            <div>
+              <label htmlFor="hours">Hours</label>
+              <input
+                disabled={flipped === false}
+                value={flipped ? amount : Math.round(amount / 60)}
+                id="hours"
+                placeholder="Hours"
+                type="number"
+                onChange={onChange}
+              />
+            </div>
+            <button onClick={reset}>RESET!</button>
+            <button onClick={onFlip}>FLIP!</button>
+          </div>
+        );
+      }
+      function KmToMiles() {
+        const [amount, setAmount] = React.useState(0);
+        const [flipped, setFlipped] = React.useState(false);
+        const onChange = (event) => {
+          setAmount(event.target.value);
+        };
+        const reset = () => setAmount(0);
+        const onFlip = () => {
+          reset();
+          setFlipped((current) => !current);
+        };
+
+        return (
+          <div>
+            <div>
+              <label htmlFor="km">Km</label>
+              <input
+                value={flipped ? amount * 1.609 : amount}
+                id="km"
+                placeholder="km"
+                type="number"
+                onChange={onChange}
+                disabled={flipped === true}
+              />
+            </div>
+            <div>
+              <label htmlFor="miles">Miles</label>
+              <input
+                disabled={flipped === false}
+                value={flipped ? amount : amount / 1.609}
+                id="miles"
+                placeholder="Miles"
+                type="number"
+                onChange={onChange}
+              />
+            </div>
+            <button onClick={reset}>RESET!</button>
+            <button onClick={onFlip}>FLIP!</button>
+          </div>
+        );
+      }
+
+      // 큰 껍데기
+      // divide and conquer -- 분할정복
+      function App() {
+        const [index, setIndex] = React.useState("99");
+        const onSelect = (event) => {
+          setIndex(event.target.value);
+        };
+        return (
+          <div>
+            <h1>Super Converter</h1>
+            <select onChange={onSelect}>
+              <option value="99">select your converter</option>
+              <option value="0">Minutes & Hours</option>
+              <option value="1">Km & Miles</option>
+            </select>
+            <hr />
+            {index === "99" ? "Please Select Your Converter" : null}
+            {index === "0" ? <MinuteToHour /> : null}
+            {index === "1" ? <KmToMiles /> : null}
+          </div>
+        );
+      }
+      root.render(<App />);
+      /** 리랜더링 방식을 useState로 변경
+       *
+        function App() {
+          let [counter, setCounter] = React.useState(0);
+          // react state는 어떤 값과 함수를 요소로하는 배열을 리턴
+          // 그럼 counter는 값, setCounter 함수로써 쓸 수 있는건가? 근데 파라미터가 두 개 이상이면?
+          const onClick = () => {
+            // setCounter(counter + 1); // 1 param
+            setCounter((current) => current + 1); // more safety
+          };
+          return (
+            <div>
+              <h3>Total clicks : {counter}</h3>
+              <button onClick={onClick}>Click me!</button>
+            </div>
+          );
+        }
+        root.render(<App />);
+        *
+      */
+      /** not good way
+         *
+        const container = document.getElementById("root");
+        const root = ReactDOM.createRoot(container);
+        let count = 0;
+
+        function countUp() {
+          count = count + 1;
+          // 2. 여기서 렌더링을 한번더 해주면 카운터가 바뀜
+          render();
+        }
+
+        // 3. 리랜더링 함수를 만듦
+        function render() {
+          root.render(<App />);
+        }
+        const App = () => (
+          <div>
+            <h3>Total clicks : {count}</h3>
+            <button onClick={countUp}>Click me!</button>
+          </div>
+        ); // 1. 리렌더링 하지 않으므로 카운터가 안바뀜.
+        render();
+         *
+        */
+    </script>
+  </body>
+</html>
